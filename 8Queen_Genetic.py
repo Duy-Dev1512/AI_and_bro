@@ -21,15 +21,12 @@ def view(invididual, index):
     for i in range(len(invididual)):
         print(f'  {i+1}', end='')
     print()
-def init(individual:list):
-    for i in range(len(individual)):
-        individual.append(random.randit(1, 8))
 def createPopulation(population: list):
     while (len(population) != 200):
         individual = []
         for i in range(8):
             individual.append(random.randint(1, 8))
-        if individual not in population and getFitness(individual)>14:
+        if individual not in population and getFitness(individual)>25:
             population.append(individual)
             # print(individual)
 def deleteIndividual(population, individual):
@@ -42,12 +39,7 @@ def getFitness(invididual: list):  # lấy ra giá trị thích nghi của một
     length = len(invididual)
     for i in range(length- 1):
         for j in range(i + 1, length):
-            if invididual[i] == invididual[j]:
-                conflict += 1
-    #hàng ngang và chéo
-    for i in range(length - 1):
-        for j in range(i + 1, length):
-            if abs(invididual[j] - invididual[i]) == abs(j - i):
+            if invididual[i] == invididual[j] or abs(invididual[j] - invididual[i]) == abs(j - i):
                 conflict += 1
     return fitnessGoal - conflict
 def getBestIndividual(population: list):
@@ -72,7 +64,7 @@ def crossOver1(father:list, mother:list, pointCrossOver):
 def crossOver2(father: list, mother: list, pointCrossOver):
     child = []
     for i in range(pointCrossOver):
-        child.append(father[random.randint(0,7)])
+        child.append(father[random.randint(0, 7)])
     for i in range(pointCrossOver, len(mother)):
         child.append(mother[random.randint(0, 7)])
     return child
@@ -88,12 +80,12 @@ def getHuristic(individual: list):  # trả về một mảng gồm vị trí sa
 def mutation(child: list):  # đột biến để tìm ra child có fitness tốt nhất
     global pointCrossOver, father, mother
     newchange = -1
-    while newchange != 0:
+    while newchange != 0: # nếu mà chưa có fitness nào mà nó tốt nhất
         newchange = 0
         tempChild = child.copy()
-        huristic = getHuristic(tempChild)  
+        huristic = getHuristic(tempChild) # list lưu các thái xấu nhất 
         index = huristic.index(max(huristic))
-        maxFitness = getFitness(tempChild) 
+        maxFitness = getFitness(tempChild) #fitness hiện tại của child > 25
         for i in range(1, 9):
             tempChild[index] = i
             # nếu mà fitness tại con mới mà lớn fitness của hiện tại thì đột biến nó bằng cái vị trí khác
@@ -101,12 +93,14 @@ def mutation(child: list):  # đột biến để tìm ra child có fitness tố
                 maxFitness = getFitness(tempChild)
                 newchange = i
             tempChild = child.copy()
-        #phương án 2 đột biến chấp nhận luôn cái xấu nhất
-        if newchange == 0:
+        if newchange == 0: # không có trạng thái nào mà có fitness lớn hơn nữa
             for i in range(len(child) - 1):
                 for j in range(i + 1, len(child)):
                     if child[i] == child[j]:
-                        child[i] = random.randint(1, 8)
+                        random1 = random.randint(1, 8)
+                        while(random1==child[i]):
+                            random1=random.randint(1, 8)
+                        child[i] = random1
         else:
             child[index] = newchange
 
@@ -145,8 +139,8 @@ def solve(numberOfSolutions, solutions:list):
         if child2 not in population and child2 != father and child2!= mother:
             population.append(child2)
         print(explore)
-        print(f'{child1}:{getFitness(child1)}')
-        print(f'{child2}:{getFitness(child2)}')
+        print(f'{father}:{getFitness(father)}')
+        print(f'{mother}:{getFitness(mother)}')
         print(f'length of population: {len(population)}')
         print(f'length of solutions: {len(solutions)}')
         explore += 1
@@ -160,5 +154,4 @@ if __name__ == "__main__":
     print(f"The number of solutions you wanted: {numberOfSolutions}")
     for i in range(numberOfSolutions):
         view(solutions[i], i)
-
     print("*******************************************************")
