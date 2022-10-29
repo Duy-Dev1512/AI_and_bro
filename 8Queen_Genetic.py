@@ -134,9 +134,9 @@ def solve(numberOfSolutions, solutions:list):
         mutation(child1) 
         mutation(child2)
         #5.thêm vào quần thể
-        if child1 not in population and child1!=father and child1!=mother and getFitness(child1)>25:
+        if child1 not in population and child1!=father and child1!=mother:
             population.append(child1)
-        if child2 not in population and child2 != father and child2 != mother and getFitness(child2) > 25:
+        if child2 not in population and child2 != father and child2 != mother :
             population.append(child2)
         print(explore)
         print(f'{father}:{getFitness(father)}')
