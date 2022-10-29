@@ -52,7 +52,8 @@ def getBestIndividual(population: list):
     temp = individual.copy()
     deleteIndividual(population, temp)
     return individual
-def crossOver1(father:list, mother:list, pointCrossOver):
+def crossOver1(father:list, mother:list):
+    pointCrossOver = random.randint(0, 7)
     child=[]
     for i in range(pointCrossOver):# father[x,x,x,x,_,_,_,_]
         child.append(father[i])
@@ -62,6 +63,7 @@ def crossOver1(father:list, mother:list, pointCrossOver):
 
 
 def crossOver2(father: list, mother: list, pointCrossOver):
+    pointCrossOver = random.randint(0, 7)
     child = []
     for i in range(pointCrossOver):
         child.append(father[random.randint(0, 7)])
@@ -97,10 +99,7 @@ def mutation(child: list):  # đột biến để tìm ra child có fitness tố
             for i in range(len(child) - 1):
                 for j in range(i + 1, len(child)):
                     if child[i] == child[j]:
-                        random1 = random.randint(1, 8)
-                        while(random1==child[i]):
-                            random1=random.randint(1, 8)
-                        child[i] = random1
+                        child[j] =random.randint(1, 8)
         else:
             child[index] = newchange
 
@@ -110,6 +109,8 @@ def solve(numberOfSolutions, solutions:list):
     explore = 0
     population = []
     createPopulation(population)
+    # for x in population:
+    #     print(x)
     while len(solutions) < numberOfSolutions:
         if(len(population)==0):
             createPopulation(population)
@@ -124,12 +125,11 @@ def solve(numberOfSolutions, solutions:list):
         if goal(getFitness(mother)) == True and mother not in solutions:
             solutions.append(mother)
         #3.lai tạo
-        pointCrossOver=random.randint(0,7)
-        child1 = crossOver1(father, mother, pointCrossOver)
-        child2 = crossOver1(mother, father, pointCrossOver)
+        child1 = crossOver1(father, mother)
+        child2 = crossOver1(mother, father)
         '''-->hàm lai tạo thứ 2 cho kết quả đa dạng hơn và nhiều phương án hơn<--'''
-        # child1 = crossOver2(father, mother, pointCrossOver)
-        # child2 = crossOver2(mother, father, pointCrossOver)
+        # child1 = crossOver2(father, mother)
+        # child2 = crossOver2(mother, father)
         #4.đột biến 
         mutation(child1) 
         mutation(child2)
