@@ -53,7 +53,7 @@ def getBestIndividual(population: list):
     deleteIndividual(population, temp)
     return individual
 def crossOver1(father:list, mother:list):
-    pointCrossOver = random.randint(0, 7)
+    pointCrossOver = 4
     child=[]
     for i in range(pointCrossOver):# father[x,x,x,x,_,_,_,_]
         child.append(father[i])
@@ -61,9 +61,8 @@ def crossOver1(father:list, mother:list):
         child.append(mother[i])
     return child
 
-
-def crossOver2(father: list, mother: list, pointCrossOver):
-    pointCrossOver = random.randint(0, 7)
+def crossOver2(father: list, mother: list):
+    pointCrossOver = 4
     child = []
     for i in range(pointCrossOver):
         child.append(father[random.randint(0, 7)])
@@ -80,7 +79,6 @@ def getHuristic(individual: list):  # trả về một mảng gồm vị trí sa
                 huristic[i] += 1
     return huristic
 def mutation(child: list):  # đột biến để tìm ra child có fitness tốt nhất
-    global pointCrossOver, father, mother
     newchange = -1
     while newchange != 0: # nếu mà chưa có fitness nào mà nó tốt nhất
         newchange = 0
@@ -109,8 +107,8 @@ def solve(numberOfSolutions, solutions:list):
     explore = 0
     population = []
     createPopulation(population)
-    # for x in population:
-    #     print(x)
+    for x in population:
+        print(x)
     while len(solutions) < numberOfSolutions:
         if(len(population)==0):
             createPopulation(population)
@@ -136,7 +134,7 @@ def solve(numberOfSolutions, solutions:list):
         #5.thêm vào quần thể
         if child1 not in population and child1!=father and child1!=mother:
             population.append(child1)
-        if child2 not in population and child2 != father and child2 != mother :
+        if child2 not in population and child2 != father and child2!= mother:
             population.append(child2)
         print(explore)
         print(f'{father}:{getFitness(father)}')
