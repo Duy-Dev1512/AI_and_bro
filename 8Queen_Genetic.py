@@ -69,7 +69,7 @@ def crossOver2(father: list, mother: list):
     for i in range(pointCrossOver, len(mother)):
         child.append(mother[random.randint(0, 7)])
     return child
-def getHuristic(individual: list):  # trả về một mảng gồm vị trí sai khác của các một cá thể
+def getHeuristic(individual: list):  # trả về một mảng gồm vị trí sai khác của các một cá thể
     # kiểm tra một quân hậu đụng độ với bao nhiêu quân hậu khác
     huristic = []
     for i in range(len(individual)):
@@ -83,7 +83,7 @@ def mutation(child: list):  # đột biến để tìm ra child có fitness tố
     while newchange != 0: # nếu mà chưa có fitness nào mà nó tốt nhất
         newchange = 0
         tempChild = child.copy()
-        huristic = getHuristic(tempChild) # list lưu các thái xấu nhất 
+        huristic = getHeuristic(tempChild) # list lưu các thái xấu nhất 
         index = huristic.index(max(huristic))
         maxFitness = getFitness(tempChild) #fitness hiện tại của child > 25
         for i in range(1, 9):
@@ -103,7 +103,7 @@ def mutation(child: list):  # đột biến để tìm ra child có fitness tố
 
 def goal(fitness):
     return fitness == fitnessGoal
-def solve(numberOfSolutions, solutions:list):
+def genetic(numberOfSolutions, solutions:list):
     explore = 0
     population = []
     createPopulation(population)
@@ -123,11 +123,11 @@ def solve(numberOfSolutions, solutions:list):
         if goal(getFitness(mother)) == True and mother not in solutions:
             solutions.append(mother)
         #3.lai tạo
-        child1 = crossOver1(father, mother)
-        child2 = crossOver1(mother, father)
+        # child1 = crossOver1(father, mother)
+        # child2 = crossOver1(mother, father)
         '''-->hàm lai tạo thứ 2 cho kết quả đa dạng hơn và nhiều phương án hơn<--'''
-        # child1 = crossOver2(father, mother)
-        # child2 = crossOver2(mother, father)
+        child1 = crossOver2(father, mother)
+        child2 = crossOver2(mother, father)
         #4.đột biến 
         mutation(child1) 
         mutation(child2)
@@ -147,7 +147,7 @@ def solve(numberOfSolutions, solutions:list):
 if __name__ == "__main__":
     numberOfSolutions = int(input("Number of solutions:"))
     solutions=[]
-    solve(numberOfSolutions, solutions)
+    genetic(numberOfSolutions, solutions)
     print("********************** Solutions **********************")
     print(f"The number of solutions you wanted: {numberOfSolutions}")
     for i in range(numberOfSolutions):
